@@ -3,1341 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طرح پیشنهادی طراحی و راه‌اندازی سامانه جامع مرجع دانشگاه | دانشکده امام محمدباقر (ع) ساری</title>
-    
-    <!-- فونت فارسی وزیرمتن برای بالاترین سطح خوانایی -->
+    <title>طرح پیشنهادی سامانه جامع مرجع دانشگاه | دانشکده امام محمدباقر (ع) ساری</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- آیکون‌های مدرن Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Vazirmatn', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
                     colors: {
                         royal: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#1d4ed8',
-                            700: '#1e40af',
-                            800: '#1e3a8a',
-                            900: '#0f2c59',
-                            950: '#091b38',
+                            50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+                            400: '#60a5fa', 500: '#3b82f6', 600: '#1d4ed8', 700: '#1e40af',
+                            800: '#1e3a8a', 900: '#0f2c59', 950: '#091b38',
                         },
-                        skybrand: {
-                            500: '#0284c7',
-                            600: '#0369a1',
-                        }
-                    },
-                    boxShadow: {
-                        'soft': '0 10px 35px -10px rgba(15, 44, 89, 0.07)',
-                        'card': '0 20px 45px -15px rgba(29, 78, 216, 0.11)',
+                        skybrand: { 500: '#0284c7', 600: '#0369a1' }
                     }
                 }
             }
         }
     </script>
-
     <style>
-        /* تنظیمات پایه تایپوگرافی، فاصله خطوط و خوانایی فوق‌العاده */
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-            overflow-x: hidden;
-            line-height: 1.95;
-        }
-
-        .readable-text {
-            line-height: 2;
-            letter-spacing: -0.01em;
-        }
-
-        /* هدر شیشه‌ای ساده و بدون منو */
-        .clean-header {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* پس‌زمینه ملایم آبی و سفید */
-        .hero-bg {
-            background-color: #ffffff;
-            background-image: 
-                radial-gradient(at 10% 10%, rgba(219, 234, 254, 0.7) 0px, transparent 50%),
-                radial-gradient(at 90% 20%, rgba(224, 242, 254, 0.7) 0px, transparent 50%),
-                radial-gradient(at 50% 90%, rgba(239, 246, 255, 0.85) 0px, transparent 55%);
-        }
-
-        /* انیمیشن نرم ظهور بخش‌ها */
-        .reveal {
-            opacity: 0;
-            transform: translateY(22px);
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* انیمیشن نمودارها */
-        .bar-animate {
-            transition: height 1.2s cubic-bezier(0.22, 1, 0.36, 1), width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        /* تنظیمات چاپ / PDF */
+        body { font-family: 'Vazirmatn', sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.8; }
+        .gallery-scroll { scrollbar-width: thin; scrollbar-color: #1e40af #e2e8f0; }
+        .gallery-scroll::-webkit-scrollbar { height: 6px; }
+        .gallery-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
+        .gallery-scroll::-webkit-scrollbar-thumb { background: #1e40af; border-radius: 10px; }
+        .lightbox { display: none; }
+        .lightbox.active { display: flex; }
         @media print {
             .no-print { display: none !important; }
-            body { background: #ffffff !important; }
-            .reveal { opacity: 1 !important; transform: none !important; }
-            section { break-inside: avoid; page-break-inside: avoid; }
+            body { background: white; }
+            section { break-inside: avoid; }
         }
     </style>
 </head>
-<body class="antialiased selection:bg-royal-600 selection:text-white">
+<body class="antialiased">
 
-    <!-- پیام‌رسان اختصاصی بدون استفاده از alert -->
-    <div id="toastBox" class="fixed bottom-5 left-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none no-print">
-        <div class="bg-royal-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-royal-700 flex items-center gap-3 max-w-sm">
-            <div class="w-9 h-9 rounded-xl bg-skybrand-500/25 text-sky-300 flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-circle-check text-lg"></i>
+<!-- هدر -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 no-print">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-royal-900 to-royal-600 text-white flex items-center justify-center">
+                <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <div>
-                <p id="toastTitle" class="font-bold text-sm">ثبت موفق</p>
-                <p id="toastMsg" class="text-xs text-blue-100 mt-0.5 leading-relaxed">عملیات با موفقیت انجام شد.</p>
+                <span class="block text-[11px] font-bold text-skybrand-600">دانشگاه ملی مهارت</span>
+                <span class="block text-sm font-black text-royal-900">دانشکده امام محمدباقر (ع) ساری</span>
+            </div>
+        </div>
+        <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-royal-900 text-white text-sm font-bold flex items-center gap-2">
+            <i class="fa-solid fa-print"></i> چاپ / PDF
+        </button>
+    </div>
+</header>
+
+<!-- هیرو -->
+<section class="bg-white border-b border-blue-100 py-10">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="text-center space-y-4">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-royal-800 text-xs font-extrabold">
+                <span class="w-2 h-2 rounded-full bg-royal-600"></span>
+                پروپوزال تحول دیجیتال دانشگاه
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black text-royal-900 leading-snug">
+                طرح پیشنهادی طراحی و راه‌اندازی<br>
+                <span class="text-royal-600">سامانه جامع مرجع دانشگاه</span>
+            </h1>
+            <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base">
+                ایجاد مرجع دیجیتال یکپارچه، مدرن و واکنش‌گرا برای شناخت کامل دانشگاه، معرفی اساتید، انتشار دستاوردهای علمی دانشجویان و ارتباط الکترونیکی شفاف.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 pt-2">
+                <div class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold">طراحی و پیاده‌سازی: رایگان</div>
+                <div class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold">پشتیبانی فنی: رایگان</div>
+                <div class="px-4 py-2 rounded-xl bg-blue-50 border border-blue-200 text-royal-800 text-sm font-bold">فقط هزینه دامنه + هاست</div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- هدر بسیار تمیز و ساده بدون منو (فقط عنوان و دکمه چاپ/PDF) -->
-    <header class="sticky top-0 inset-x-0 z-40 clean-header no-print">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+<!-- چه می‌خواهیم انجام دهیم -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4 space-y-6">
+        <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black flex items-center justify-center">۱</span>
+            <h2 class="text-xl font-black text-royal-900">چه می‌خواهیم انجام دهیم؟</h2>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4 text-slate-700 text-sm sm:text-base text-justify leading-8">
+            <p>
+                وب‌سایت فعلی دانشگاه عمدتاً نقش اطلاع‌رسانی ساده دارد. هدف این طرح تبدیل آن به یک <strong>مرجع دیجیتال جامع</strong> است که بتواند:
+            </p>
+            <ul class="grid sm:grid-cols-2 gap-3 list-none">
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> دانشگاه را با تصویر، ویدئو و جزئیات امکانات معرفی کند</li>
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> پروفایل کامل و اختصاصی اساتید را ارائه دهد</li>
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> مقالات و دستاوردهای علمی دانشجویان را منتشر و قابل جستجو کند</li>
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> سامانه ثبت و پیگیری شکایات و پیشنهادات با کد رهگیری داشته باشد</li>
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> اخبار و اطلاعیه‌ها را دسته‌بندی‌شده و متمرکز نمایش دهد</li>
+                <li class="flex items-start gap-2 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mt-1"></i> کاملاً واکنش‌گرا و مناسب موبایل باشد</li>
+            </ul>
+            <p class="p-4 rounded-xl bg-blue-50 border-r-4 border-r-royal-600 font-semibold text-royal-900">
+                نتیجه: کاهش مراجعات حضوری، شفافیت بیشتر، تقویت هویت علمی دانشگاه و ایجاد رزومه دیجیتال برای دانشجویان.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- مقایسه خلاصه -->
+<section class="py-10 bg-white">
+    <div class="max-w-5xl mx-auto px-4 space-y-6">
+        <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black flex items-center justify-center">۲</span>
+            <h2 class="text-xl font-black text-royal-900">تفاوت وضعیت فعلی با سامانه پیشنهادی</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+            <div class="rounded-2xl bg-red-50 border border-red-200 p-5">
+                <h3 class="font-black text-red-900 mb-3 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation"></i> وضعیت فعلی</h3>
+                <ul class="space-y-2 text-sm text-red-950">
+                    <li class="flex gap-2"><i class="fa-solid fa-xmark text-red-500 mt-0.5"></i> فقط انتشار اخبار ساده</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-xmark text-red-500 mt-0.5"></i> نبود سامانه شکایت و پیشنهاد</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-xmark text-red-500 mt-0.5"></i> فقدان پروفایل اساتید</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-xmark text-red-500 mt-0.5"></i> نبود پایگاه مقالات دانشجویی</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-xmark text-red-500 mt-0.5"></i> تجربه کاربری ضعیف در موبایل</li>
+                </ul>
+            </div>
+            <div class="rounded-2xl bg-emerald-50 border border-emerald-300 p-5">
+                <h3 class="font-black text-emerald-900 mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> سامانه پیشنهادی</h3>
+                <ul class="space-y-2 text-sm text-emerald-950">
+                    <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> مرجع کامل شناخت دانشگاه (تصویر و ویدئو)</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> ثبت آنلاین درخواست + کد پیگیری</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> بانک اطلاعاتی کامل اساتید</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> انتشار مقالات با سئو و صفحه اختصاصی</li>
+                    <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> طراحی ۱۰۰٪ واکنش‌گرا و مدرن</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- گالری تصاویر -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4 space-y-5">
+        <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-royal-900 to-royal-600 text-white flex items-center justify-center shadow-sm shrink-0">
-                    <i class="fa-solid fa-graduation-cap text-lg sm:text-xl"></i>
-                </div>
-                <div>
-                    <span class="block text-[11px] sm:text-xs font-bold text-skybrand-600">دانشگاه ملی مهارت</span>
-                    <span class="block text-sm sm:text-base font-black text-royal-900">دانشگاه امام محمدباقر (ع) ساری</span>
-                </div>
+                <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black flex items-center justify-center">۳</span>
+                <h2 class="text-xl font-black text-royal-900">نمونه‌های طراحی سامانه</h2>
             </div>
-
-            <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-royal-900 hover:bg-royal-800 text-white text-xs sm:text-sm font-bold shadow-sm transition cursor-pointer shrink-0">
-                <i class="fa-solid fa-print"></i>
-                <span>چاپ / ذخیره PDF طرح</span>
-            </button>
+            <span class="text-xs text-slate-500 no-print">برای مشاهده بزرگ‌تر روی تصویر کلیک کنید • اسکرول افقی</span>
         </div>
-    </header>
 
-    <!-- بخش آغازین (Hero Section) + عکس ۱ (عکس اصلی) -->
-    <section class="hero-bg pt-10 pb-16 sm:pt-14 sm:pb-20 border-b border-blue-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                
-                <!-- ستون عنوان و معرفی اصلی -->
-                <div class="lg:col-span-6 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-royal-800 text-xs font-extrabold">
-                        <span class="w-2 h-2 rounded-full bg-royal-600"></span>
-                        <span>پروپوزال جامع تحول دیجیتال دانشگاهی</span>
-                    </div>
-
-                    <h1 class="text-2xl sm:text-3xl lg:text-[2.4rem] font-black text-royal-900 leading-snug">
-                        طرح پیشنهادی طراحی و راه‌اندازی
-                        <span class="block text-royal-600 mt-1.5">سامانه جامع مرجع دانشگاه</span>
-                    </h1>
-
-                    <div class="p-5 rounded-2xl bg-white border border-blue-100 border-r-4 border-r-royal-600 shadow-soft">
-                        <p class="text-base sm:text-lg font-extrabold text-royal-900">
-                            دانشگاه ملی مهارت – دانشکده امام محمدباقر (ع) ساری
-                        </p>
-                        <p class="text-sm text-slate-600 mt-2 leading-7">
-                            ایجاد یک مرجع دیجیتال یکپارچه، مدرن و واکنش‌گرا برای شناخت کامل دانشگاه، معرفی اساتید، انتشار دستاوردهای علمی دانشجویان و ارتباط الکترونیکی سریع و شفاف.
-                        </p>
-                    </div>
-
-                    <!-- خلاصه امتیازات کلیدی طرح -->
-                    <div class="grid grid-cols-3 gap-3 text-center">
-                        <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200">
-                            <span class="block text-base sm:text-lg font-black text-emerald-700">رایگان</span>
-                            <span class="text-[11px] sm:text-xs font-bold text-emerald-900">طراحی و پیاده‌سازی</span>
-                        </div>
-                        <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200">
-                            <span class="block text-base sm:text-lg font-black text-emerald-700">رایگان</span>
-                            <span class="text-[11px] sm:text-xs font-bold text-emerald-900">پشتیبانی فنی و نگهداری</span>
-                        </div>
-                        <div class="p-3.5 rounded-2xl bg-blue-50/80 border border-blue-200">
-                            <span class="block text-base sm:text-lg font-black text-royal-800">۱۴ بخش</span>
-                            <span class="text-[11px] sm:text-xs font-bold text-royal-900">ساختار جامع و توسعه‌پذیر</span>
+        <!-- گالری اسکرول‌شونده -->
+        <div class="gallery-scroll overflow-x-auto pb-3">
+            <div class="flex gap-4 w-max">
+                <!-- تصویر ۱ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(0)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/1.png" 
+                             alt="صفحه اصلی سامانه" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=1'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۱. صفحه اصلی و مرجع دانشگاه</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- ستون عکس ۱ (عکس اصلی) -->
-                <div class="lg:col-span-6">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="relative rounded-2xl overflow-hidden aspect-[16/11] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/1.png" 
-                                alt="سامانه جامع مرجع دانشگاه ملی مهارت - دانشکده امام محمدباقر (ع) ساری" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                            <div class="absolute inset-0 bg-gradient-to-t from-royal-950/75 via-transparent to-transparent"></div>
-                            <div class="absolute bottom-4 right-4 left-4 text-white">
-                                <span class="text-xs text-sky-300 font-bold block">مرجع رسمی دیجیتال دانشگاه</span>
-                                <span class="text-sm sm:text-base font-extrabold">دانشگاه ملی مهارت – دانشکده امام محمدباقر (ع) ساری</span>
-                            </div>
+                <!-- تصویر ۲ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(1)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/2.png" 
+                             alt="معرفی دانشگاه" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=2'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۲. معرفی محیط و امکانات</span>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- بند ۱: مقدمه و ضرورت اجرای پروژه -->
-    <section class="py-16 sm:py-20 bg-white">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۱</span>
-                <div>
-                    <span class="text-xs font-bold text-skybrand-600 block">بخش اول طرح پیشنهادی</span>
-                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۱. مقدمه و ضرورت اجرای پروژه</h2>
+                <!-- تصویر ۳ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(2)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/3.png" 
+                             alt="پایگاه مقالات" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=3'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۳. پایگاه مقالات دانشجویان</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-9 border border-slate-200/80 shadow-soft space-y-5 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                <p>
-                    در عصر تحول دیجیتال، وب‌سایت دانشگاه دیگر صرفاً یک ابزار برای انتشار اخبار و اطلاعیه‌ها نیست؛ بلکه یکی از مهم‌ترین زیرساخت‌های ارتباطی، مدیریتی و هویتی هر مرکز آموزش عالی محسوب می‌شود.
-                </p>
-                <p>
-                    امروزه اولین برخورد بسیاری از افراد با یک دانشگاه از طریق جست‌وجوی اینترنتی و مراجعه به وب‌سایت آن اتفاق می‌افتد. داوطلبان ورود به دانشگاه می‌خواهند با امکانات، رشته‌ها، اساتید و محیط آموزشی آشنا شوند. دانشجویان به دنبال دسترسی سریع به اخبار و خدمات هستند و خانواده‌ها نیز تمایل دارند شناخت دقیق‌تری از محیط تحصیل فرزندان خود داشته باشند.
-                </p>
-                <p>
-                    در چنین شرایطی، صرفاً در اختیار داشتن یک وب‌سایت اطلاع‌رسانی، پاسخگوی تمام نیازهای اطلاعاتی و ارتباطی دانشگاه نیست.
-                </p>
-                <div class="p-5 rounded-2xl bg-white border border-blue-200 border-r-4 border-r-royal-700 text-royal-950 font-semibold shadow-sm">
-                    هدف این پروژه، ایجاد یک سامانه جامع، مدرن و توسعه‌پذیر است که بتواند به مرجع اصلی شناخت دانشگاه، دریافت اطلاعات، ارتباط با مسئولان و معرفی دستاوردهای علمی تبدیل شود.
+                <!-- تصویر ۴ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(3)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/4.png" 
+                             alt="اخبار و ارتباط" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=4'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۴. اخبار و راه‌های ارتباطی</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- تصویر ۵ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(4)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/5.png" 
+                             alt="سامانه شکایات" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=5'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۵. سامانه شکایت و پیشنهاد</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- تصویر ۶ -->
+                <div class="w-64 sm:w-72 shrink-0 cursor-pointer group" onclick="openLightbox(5)">
+                    <div class="rounded-2xl overflow-hidden border border-blue-100 shadow-md bg-white">
+                        <img src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/6.png" 
+                             alt="معرفی اساتید" 
+                             class="w-full h-44 object-cover group-hover:scale-105 transition duration-300"
+                             onerror="this.src='https://placehold.co/600x400/1e40af/ffffff?text=6'">
+                        <div class="p-3 text-center">
+                            <span class="text-xs font-bold text-royal-800">۶. پروفایل و بانک اساتید</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- بند ۲ + بخش ویژه مقایسه کنار هم (قرمز: سامانه فعلی شما | سبز: سامانه جامع پیشنهادی ما) -->
-    <section class="py-16 sm:py-20 bg-slate-50 border-y border-slate-200/80">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 reveal">
-            
-            <!-- متن کامل بند ۲ -->
-            <div class="max-w-5xl mx-auto">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۲</span>
-                    <div>
-                        <span class="text-xs font-bold text-skybrand-600 block">بخش دوم طرح پیشنهادی</span>
-                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۲. تفاوت ساختار فعلی با سامانه پیشنهادی</h2>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl p-6 sm:p-9 border border-blue-100 shadow-soft space-y-5 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                    <p>
-                        ساختار فعلی وب‌سایت دانشگاه از نظر امکانات، تجربه کاربری و سازگاری با نمایشگرهای مختلف، به‌ویژه تلفن‌های همراه، ظرفیت توسعه و بهبود دارد.
-                    </p>
-                    <p>
-                        در طرح پیشنهادی، رویکرد صرفاً تغییر ظاهر وب‌سایت نیست؛ بلکه ایجاد یک ساختار اطلاعاتی و ارتباطی کامل‌تر مدنظر است.
-                    </p>
-                    <p>
-                        در سامانه جدید، کاربر فقط برای مشاهده چند خبر وارد سایت نمی‌شود؛ بلکه می‌تواند اطلاعات جامعی درباره دانشگاه به دست آورد، محیط و امکانات آن را مشاهده کند، اساتید را بشناسد، فعالیت‌های علمی دانشجویان را بررسی کند و درخواست‌های خود را به‌صورت الکترونیکی ثبت و پیگیری کند.
-                    </p>
-                    <p class="p-4 rounded-2xl bg-blue-50/80 border-r-4 border-r-royal-600 text-royal-900 font-bold">
-                        به بیان دیگر، هدف تبدیل وب‌سایت از یک بستر محدود اطلاع‌رسانی به یک مرجع دیجیتال جامع برای دانشگاه است.
-                    </p>
-                </div>
-            </div>
-
-            <!-- جدول/کارت‌های مقایسه کنار هم: قرمز (سامانه فعلی) در برابر سبز (سامانه پیشنهادی ما) -->
-            <div class="pt-4">
-                <div class="text-center max-w-2xl mx-auto mb-8">
-                    <span class="inline-block px-4 py-1.5 rounded-full bg-white border border-slate-200 text-royal-900 text-xs font-extrabold mb-2 shadow-sm">
-                        مقایسه شفاف امکانات و قابلیت‌ها
-                    </span>
-                    <h3 class="text-xl sm:text-2xl font-black text-royal-900">
-                        سامانه فعلی دانشگاه چه دارد و چه امکاناتی در سامانه جدید ما اضافه می‌شود؟
-                    </h3>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
-                    
-                    <!-- ستون قرمز: وضعیت فعلی سامانه دانشگاه -->
-                    <div class="rounded-3xl bg-red-50/75 border-2 border-red-200 p-6 sm:p-8 shadow-soft flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between gap-3 pb-5 mb-6 border-b border-red-200/80">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center text-xl shadow-sm shrink-0">
-                                        <i class="fa-solid fa-triangle-exclamation"></i>
-                                    </div>
-                                    <div>
-                                        <span class="text-xs font-extrabold text-red-600 block">وضعیت موجود</span>
-                                        <h4 class="text-lg sm:text-xl font-black text-red-950">سامانه فعلی دانشگاه</h4>
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-extrabold border border-red-200">محدود و سنتی</span>
-                            </div>
-
-                            <ul class="space-y-3.5 text-sm sm:text-[15px] text-red-950">
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>فقط انتشار اخبار و اطلاعیه‌های ساده:</strong> محدود به متن‌های خبری بدون معرفی جامع محیط و کارگاه‌های دانشگاه.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>نبود سامانه ثبت و پیگیری شکایات و پیشنهادات:</strong> نیاز به مراجعه حضوری یا پیگیری تلفنی برای حل مشکلات دانشجو.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>فقدان بانک اطلاعاتی و صفحات اختصاصی اساتید:</strong> دانشجویان شناخت دقیقی از تخصص و سوابق اساتید ندارند.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>نبود پایگاه مقالات و رزومه علمی دانشجویان:</strong> دستاوردها و پروژه‌های دانشجویی در اینترنت دیده نمی‌شوند.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>تجربه کاربری و سازگاری ضعیف در موبایل:</strong> دشواری دسترسی سریع و منظم در گوشی‌های هوشمند.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white/80 p-3.5 rounded-2xl border border-red-100">
-                                    <i class="fa-solid fa-circle-xmark text-red-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>پراکندگی اطلاع‌رسانی‌ها:</strong> سردرگمی مخاطبان میان چندین کانال و صفحه غیرمتمرکز.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="mt-6 pt-4 border-t border-red-200/70 text-xs font-bold text-red-800 text-center">
-                            نتیجه ساختار فعلی: افزایش مراجعات حضوری و بهره‌نبردن از ظرفیت دیجیتال دانشگاه
-                        </div>
-                    </div>
-
-                    <!-- ستون سبز: سامانه جامع پیشنهادی ما -->
-                    <div class="rounded-3xl bg-emerald-50/80 border-2 border-emerald-300 p-6 sm:p-8 shadow-card flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between gap-3 pb-5 mb-6 border-b border-emerald-200">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-sm shrink-0">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                    </div>
-                                    <div>
-                                        <span class="text-xs font-extrabold text-emerald-700 block">امکانات جدید و افزوده</span>
-                                        <h4 class="text-lg sm:text-xl font-black text-emerald-950">سامانه جامع پیشنهادی ما</h4>
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-extrabold">هوشمند و جامع</span>
-                            </div>
-
-                            <ul class="space-y-3.5 text-sm sm:text-[15px] text-emerald-950">
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>مرجع کامل شناخت دانشگاه (تصویر، ویدئو و امکانات):</strong> معرفی ساختمان‌ها، کارگاه‌ها، آزمایشگاه‌ها و رشته‌ها برای داوطلبان و خانواده‌ها.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>سامانه الکترونیکی ثبت و رهگیری شکایات و پیشنهادات:</strong> ثبت آنلاین بدون مراجعه حضوری، صدور کد پیگیری و ارجاع به مسئول مربوطه.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>پروفایل اختصاصی و بانک جامع اساتید:</strong> نمایش مدرک، تخصص‌ها، سوابق تدریس، مقالات و فعالیت‌های صنعتی هر استاد.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>پایگاه انتشار مقالات علمی دانشجویان با سئوی گوگل:</strong> ساخت رزومه علمی معتبر و معرفی استعدادها به شرکت‌ها و بازار کار.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>طراحی ۱۰۰٪ واکنش‌گرا (موبایل، تبلت و دسکتاپ):</strong> رابط کاربری مدرن، سریع و کاملاً متناسب با گوشی‌های هوشمند.</span>
-                                </li>
-                                <li class="flex items-start gap-3 bg-white p-3.5 rounded-2xl border border-emerald-200 shadow-sm">
-                                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5 shrink-0"></i>
-                                    <span><strong>مرکز اخبار دسته‌بندی‌شده + طراحی و پشتیبانی رایگان:</strong> زیرساخت امن ابری با قابلیت توسعه آینده بدون هزینه طراحی و پشتیبانی.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="mt-6 pt-4 border-t border-emerald-200 text-xs font-extrabold text-emerald-800 text-center">
-                            نتیجه سامانه ما: تبدیل وب‌سایت به مرجع رسمی، شفاف و افتخارآفرین برای دانشکده
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+<!-- هزینه و شرایط -->
+<section class="py-10 bg-white">
+    <div class="max-w-5xl mx-auto px-4 space-y-6">
+        <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black flex items-center justify-center">۴</span>
+            <h2 class="text-xl font-black text-royal-900">برآورد هزینه و شرایط اجرا</h2>
         </div>
-    </section>
-
-    <!-- بخش گرافیکی نمودارهای کاربردی و تحلیل عملکرد سامانه -->
-    <section class="py-16 sm:py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-royal-700 text-xs font-extrabold mb-2">
-                    تحلیل گرافیکی و آماری سامانه
-                </span>
-                <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">
-                    این سامانه چقدر کاربردی است و در چه زمینه‌هایی تحول ایجاد می‌کند؟
-                </h2>
-                <p class="text-sm sm:text-base text-slate-600 mt-2">
-                    نمودارهای زیر میزان کارایی و اثربخشی بخش‌های مختلف سامانه جامع مرجع دانشگاه را نشان می‌دهند.
-                </p>
+        <div class="grid md:grid-cols-2 gap-5">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                <table class="w-full text-sm text-right">
+                    <thead class="bg-royal-900 text-white">
+                        <tr>
+                            <th class="py-3 px-4">عنوان</th>
+                            <th class="py-3 px-4">مدت</th>
+                            <th class="py-3 px-4">مبلغ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-slate-100">
+                        <tr>
+                            <td class="py-3 px-4 font-medium">دامنه اختصاصی</td>
+                            <td class="py-3 px-4">۵ سال</td>
+                            <td class="py-3 px-4 font-bold">۲۵۰٬۰۰۰ تومان</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">هاست ابری ایران</td>
+                            <td class="py-3 px-4">۱ سال</td>
+                            <td class="py-3 px-4 font-bold">۱۱٬۱۹۴٬۴۸۵ تومان</td>
+                        </tr>
+                        <tr class="bg-blue-50 font-black">
+                            <td class="py-3 px-4">جمع زیرساخت اولیه</td>
+                            <td class="py-3 px-4">—</td>
+                            <td class="py-3 px-4 text-royal-700">۱۱٬۴۴۴٬۴۸۵ تومان</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                
-                <!-- نمودار ستونی عمودی با مقیاس دقیق -->
-                <div class="lg:col-span-7 bg-slate-50/80 rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft flex flex-col justify-between">
-                    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
-                        <div>
-                            <h3 class="text-lg font-black text-royal-900 flex items-center gap-2">
-                                <i class="fa-solid fa-chart-column text-royal-600"></i>
-                                <span>نمودار ستونی درصد کارایی ماژول‌های سامانه</span>
-                            </h3>
-                            <p class="text-xs text-slate-500 mt-1">میزان پوشش نیازهای دانشجویان، اساتید، داوطلبان و مدیریت دانشگاه</p>
-                        </div>
-                        <button onclick="replayCharts()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 text-royal-800 border border-blue-200 text-xs font-bold transition cursor-pointer no-print">
-                            <i class="fa-solid fa-rotate-right ml-1"></i> نمایش مجدد
-                        </button>
+            <div class="rounded-2xl bg-gradient-to-br from-emerald-700 to-teal-700 text-white p-6 flex flex-col justify-center space-y-3">
+                <h3 class="font-black text-lg">شرایط ویژه</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between items-center bg-white/15 rounded-xl px-3 py-2">
+                        <span>طراحی و پیاده‌سازی</span>
+                        <span class="bg-white text-emerald-800 px-2 py-0.5 rounded-lg text-xs font-black">رایگان</span>
                     </div>
-
-                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80">
-                        <div class="grid grid-cols-5 gap-3 sm:gap-5 items-end h-64 border-b-2 border-slate-200 pb-2">
-                            
-                            <!-- ستون ۱ -->
-                            <div class="flex flex-col items-center h-full justify-end">
-                                <span class="text-xs sm:text-sm font-black text-royal-900 mb-1.5">۹۸٪</span>
-                                <div class="w-full max-w-[52px] bg-blue-50 rounded-t-xl h-full flex items-end p-1">
-                                    <div class="chart-col w-full bg-gradient-to-t from-royal-900 to-royal-500 rounded-t-lg bar-animate" data-height="98%" style="height: 0%;"></div>
-                                </div>
-                            </div>
-
-                            <!-- ستون ۲ -->
-                            <div class="flex flex-col items-center h-full justify-end">
-                                <span class="text-xs sm:text-sm font-black text-skybrand-600 mb-1.5">۹۵٪</span>
-                                <div class="w-full max-w-[52px] bg-sky-50 rounded-t-xl h-full flex items-end p-1">
-                                    <div class="chart-col w-full bg-gradient-to-t from-skybrand-600 to-sky-400 rounded-t-lg bar-animate" data-height="95%" style="height: 0%;"></div>
-                                </div>
-                            </div>
-
-                            <!-- ستون ۳ -->
-                            <div class="flex flex-col items-center h-full justify-end">
-                                <span class="text-xs sm:text-sm font-black text-emerald-700 mb-1.5">۹۴٪</span>
-                                <div class="w-full max-w-[52px] bg-emerald-50 rounded-t-xl h-full flex items-end p-1">
-                                    <div class="chart-col w-full bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-lg bar-animate" data-height="94%" style="height: 0%;"></div>
-                                </div>
-                            </div>
-
-                            <!-- ستون ۴ -->
-                            <div class="flex flex-col items-center h-full justify-end">
-                                <span class="text-xs sm:text-sm font-black text-indigo-700 mb-1.5">۹۲٪</span>
-                                <div class="w-full max-w-[52px] bg-indigo-50 rounded-t-xl h-full flex items-end p-1">
-                                    <div class="chart-col w-full bg-gradient-to-t from-indigo-700 to-indigo-400 rounded-t-lg bar-animate" data-height="92%" style="height: 0%;"></div>
-                                </div>
-                            </div>
-
-                            <!-- ستون ۵ -->
-                            <div class="flex flex-col items-center h-full justify-end">
-                                <span class="text-xs sm:text-sm font-black text-royal-800 mb-1.5">۹۰٪</span>
-                                <div class="w-full max-w-[52px] bg-blue-50 rounded-t-xl h-full flex items-end p-1">
-                                    <div class="chart-col w-full bg-gradient-to-t from-royal-800 to-blue-400 rounded-t-lg bar-animate" data-height="90%" style="height: 0%;"></div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="grid grid-cols-5 gap-2 sm:gap-4 text-center pt-3 text-[11px] sm:text-xs font-bold text-slate-700 leading-5">
-                            <div>واکنش‌گرایی موبایل و سئو</div>
-                            <div>شناخت جامع دانشگاه</div>
-                            <div>پیگیری بدون مراجعه حضوری</div>
-                            <div>رزومه علمی و مقالات</div>
-                            <div>بانک تخصصی اساتید</div>
-                        </div>
+                    <div class="flex justify-between items-center bg-white/15 rounded-xl px-3 py-2">
+                        <span>پشتیبانی فنی و نگهداری</span>
+                        <span class="bg-white text-emerald-800 px-2 py-0.5 rounded-lg text-xs font-black">رایگان</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/15 rounded-xl px-3 py-2 text-xs">
+                        <span>فقط هزینه دامنه و هاست</span>
+                        <span>پرداخت توسط دانشگاه</span>
                     </div>
                 </div>
-
-                <!-- ستون کنار نمودار: تصویر باکیفیت آنلاین + شاخص‌های کاربردی -->
-                <div class="lg:col-span-5 flex flex-col gap-6">
-                    <div class="relative rounded-3xl overflow-hidden h-48 border border-blue-100 shadow-soft">
-                        <img 
-                            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80" 
-                            alt="تحلیل کاربردی سامانه جامع دانشگاه" 
-                            onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e40af/ffffff?text=University+Smart+Portal';"
-                            class="w-full h-full object-cover"
-                        >
-                        <div class="absolute inset-0 bg-gradient-to-t from-royal-950/85 via-royal-900/35 to-transparent p-5 flex flex-col justify-end">
-                            <span class="text-xs text-sky-300 font-bold">پایش هوشمند خدمات</span>
-                            <h4 class="text-white font-extrabold text-base">افزایش بهره‌وری اداری و رضایت دانشجویان</h4>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-50/80 rounded-3xl p-6 border border-blue-100 shadow-soft space-y-4 flex-1 flex flex-col justify-center">
-                        <h4 class="font-black text-royal-900 text-base">حوزه‌های عملیاتی سامانه:</h4>
-                        
-                        <div class="space-y-3 text-xs sm:text-sm">
-                            <div>
-                                <div class="flex justify-between font-bold text-slate-700 mb-1">
-                                    <span>اطلاع‌رسانی متمرکز و معرفی امکانات دانشکده</span>
-                                    <span class="text-royal-700">۹۶٪</span>
-                                </div>
-                                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-royal-700 rounded-full" style="width: 96%;"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-bold text-slate-700 mb-1">
-                                    <span>شفافیت ارتباط دانشجو با مسئولان (تیکتینگ)</span>
-                                    <span class="text-emerald-700">۹۴٪</span>
-                                </div>
-                                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-600 rounded-full" style="width: 94%;"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-bold text-slate-700 mb-1">
-                                    <span>تقویت هویت علمی و ارتباط دانشجو با بازار کار</span>
-                                    <span class="text-skybrand-600">۹۲٪</span>
-                                </div>
-                                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-skybrand-500 rounded-full" style="width: 92%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </section>
+        <p class="text-sm text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            مشخصات هاست پیشنهادی: ۵۰ گیگابایت فضا • ۸ گیگابایت RAM • ۸ هسته CPU • کنترل‌پنل cPanel • میزبانی داخل ایران.
+        </p>
+    </div>
+</section>
 
-    <!-- بند ۳: ایجاد مرجع جامع شناخت و معرفی دانشگاه (تصویر ۲ - درباره دانشگاه) -->
-    <section class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200/80">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                
-                <!-- تصویر ۲: درباره دانشگاه -->
-                <div class="lg:col-span-5 lg:sticky lg:top-24">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/2.png" 
-                                alt="معرفی جامع محیط، کارگاه‌ها و امکانات دانشگاه" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1000&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                        </div>
-                        <div class="p-4 mt-2 rounded-2xl bg-blue-50/70 border border-blue-100">
-                            <h4 class="font-extrabold text-royal-900 text-sm">شناخت واقعی پیش از مراجعه حضوری</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-6">نمایش تصویری و ویدئویی کلاس‌ها، کارگاه‌ها، آزمایشگاه‌ها و فضای آموزشی برای داوطلبان و خانواده‌ها</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- متن کامل بند ۳ -->
-                <div class="lg:col-span-7 space-y-5">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۳</span>
-                        <div>
-                            <span class="text-xs font-bold text-skybrand-600 block">بخش سوم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۳. ایجاد مرجع جامع شناخت و معرفی دانشگاه</h2>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft space-y-5 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                        <p>
-                            یکی از مهم‌ترین قابلیت‌های سامانه پیشنهادی، ایجاد یک پایگاه اطلاعاتی جامع برای معرفی دانشگاه است.
-                        </p>
-                        <p>
-                            در این ساختار، دانشگاه صرفاً از طریق چند متن و خبر معرفی نمی‌شود؛ بلکه مخاطبان می‌توانند با استفاده از تصاویر، ویدئوها و اطلاعات دسته‌بندی‌شده، شناخت واقعی‌تر و ملموس‌تری از مجموعه به دست آورند.
-                        </p>
-
-                        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80">
-                            <h3 class="font-extrabold text-royal-900 text-base mb-3.5">این بخش شامل موارد زیر خواهد بود:</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-semibold text-slate-800">
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-building text-royal-600"></i><span>معرفی ساختمان‌ها و محوطه دانشگاه</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-video text-skybrand-500"></i><span>انتشار تصاویر و ویدئوهای محیط آموزشی</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-flask text-royal-600"></i><span>معرفی کلاس‌ها، کارگاه‌ها و آزمایشگاه‌های تخصصی</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-book-open text-skybrand-500"></i><span>معرفی کتابخانه و امکانات رفاهی</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-calendar-check text-royal-600"></i><span>نمایش فعالیت‌ها و مراسم دانشگاهی</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-layer-group text-skybrand-500"></i><span>معرفی رشته‌ها و گروه‌های آموزشی</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-sitemap text-royal-600"></i><span>معرفی معاونت‌ها و واحدهای مختلف</span></div>
-                                <div class="flex items-center gap-2.5 bg-white p-3 rounded-xl border border-slate-100"><i class="fa-solid fa-award text-skybrand-500"></i><span>معرفی امکانات و ظرفیت‌های علمی و آموزشی</span></div>
-                            </div>
-                        </div>
-
-                        <p>
-                            برای مثال، فردی که قصد ورود به دانشگاه را دارد، می‌تواند پیش از مراجعه حضوری، تصاویر و ویدئوهای محیط دانشگاه را مشاهده کند، با امکانات آن آشنا شود و اطلاعات لازم درباره رشته‌های تحصیلی و فضای آموزشی به دست آورد.
-                        </p>
-                        <p class="p-4 rounded-2xl bg-blue-50/80 border-r-4 border-r-royal-600 text-royal-900 font-bold text-sm sm:text-base">
-                            این قابلیت به‌خصوص برای داوطلبان ورود به دانشگاه و خانواده‌های آنان اهمیت زیادی دارد.
-                        </p>
-                    </div>
-                </div>
-
+<!-- جمع‌بندی -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="bg-gradient-to-l from-royal-950 via-royal-900 to-skybrand-600 rounded-2xl p-8 text-white text-center space-y-4">
+            <h2 class="text-xl sm:text-2xl font-black">جمع‌بندی و درخواست اجرا</h2>
+            <p class="text-sm sm:text-base text-blue-100 max-w-3xl mx-auto leading-8">
+                هدف ما صرفاً ساخت یک وب‌سایت نیست؛ هدف ایجاد مرجعی دیجیتال برای شناخت دانشگاه، ارتباط مؤثر، توسعه علمی و معرفی استعدادهای دانشجویان است. 
+                با توجه به ارائه رایگان طراحی، توسعه و پشتیبانی، پیشنهاد می‌شود این طرح مورد بررسی و حمایت قرار گیرد.
+            </p>
+            <div class="pt-2 flex flex-wrap justify-center gap-3 no-print">
+                <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-white text-royal-900 font-bold text-sm hover:bg-blue-50 transition">
+                    چاپ یا ذخیره PDF
+                </button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- بند ۴: سامانه جامع معرفی اساتید و سوابق علمی (تصویر ۶ - بخش معرفی اساتید) -->
-    <section class="py-16 sm:py-20 bg-white border-t border-slate-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                
-                <!-- متن کامل بند ۴ -->
-                <div class="lg:col-span-7 space-y-5 order-2 lg:order-1">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۴</span>
-                        <div>
-                            <span class="text-xs font-bold text-skybrand-600 block">بخش چهارم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۴. سامانه جامع معرفی اساتید و سوابق علمی</h2>
-                        </div>
-                    </div>
+<!-- فوتر -->
+<footer class="bg-royal-950 text-blue-200 py-6">
+    <div class="max-w-5xl mx-auto px-4 text-center text-xs sm:text-sm">
+        <p class="font-bold text-white">طرح پیشنهادی سامانه جامع مرجع دانشگاه</p>
+        <p class="mt-1">دانشگاه ملی مهارت – دانشکده امام محمدباقر (ع) ساری</p>
+    </div>
+</footer>
 
-                    <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-5 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                        <p>
-                            یکی دیگر از بخش‌های ارزشمند پروژه، ایجاد بانک اطلاعاتی اختصاصی برای معرفی اساتید دانشگاه است.
-                        </p>
-                        <p>
-                            در این بخش، برای هر استاد یک صفحه اختصاصی در نظر گرفته می‌شود که می‌تواند شامل اطلاعات زیر باشد:
-                        </p>
+<!-- لایت‌باکس -->
+<div id="lightbox" class="lightbox fixed inset-0 z-50 bg-black/90 items-center justify-center p-4 no-print" onclick="closeLightbox()">
+    <button onclick="closeLightbox()" class="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 text-white text-xl flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+    <button onclick="prevImage(event)" class="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 text-white text-xl flex items-center justify-center transition">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <button onclick="nextImage(event)" class="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 text-white text-xl flex items-center justify-center transition">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <img id="lightboxImg" src="" alt="" class="max-h-[85vh] max-w-full rounded-xl shadow-2xl" onclick="event.stopPropagation()">
+    <p id="lightboxCaption" class="absolute bottom-6 text-white text-sm font-bold bg-black/50 px-4 py-2 rounded-xl"></p>
+</div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-semibold text-slate-800">
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-id-badge text-royal-600"></i><span>تصویر و مشخصات علمی</span></div>
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-graduation-cap text-royal-600"></i><span>مدرک تحصیلی و سوابق دانشگاهی</span></div>
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-microchip text-skybrand-500"></i><span>حوزه‌های تخصصی و زمینه‌های فعالیت</span></div>
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-chalkboard-user text-skybrand-500"></i><span>سوابق تدریس و تجربیات حرفه‌ای</span></div>
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-file-lines text-royal-600"></i><span>مقالات علمی و پژوهشی</span></div>
-                            <div class="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-book text-royal-600"></i><span>کتاب‌ها و دستاوردهای علمی</span></div>
-                            <div class="sm:col-span-2 flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-blue-100"><i class="fa-solid fa-industry text-skybrand-500"></i><span>فعالیت‌های پژوهشی و صنعتی</span></div>
-                        </div>
+<script>
+    const images = [
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/1.png', caption: '۱. صفحه اصلی و مرجع دانشگاه' },
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/2.png', caption: '۲. معرفی محیط و امکانات' },
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/3.png', caption: '۳. پایگاه مقالات دانشجویان' },
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/4.png', caption: '۴. اخبار و راه‌های ارتباطی' },
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/5.png', caption: '۵. سامانه شکایت و پیشنهاد' },
+        { src: 'https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/6.png', caption: '۶. پروفایل و بانک اساتید' }
+    ];
+    let currentIndex = 0;
 
-                        <p>
-                            این بخش باعث می‌شود دانشجویان و متقاضیان تحصیل بتوانند پیش از مراجعه یا انتخاب واحدهای آموزشی، شناخت بهتری از تخصص و تجربیات اساتید پیدا کنند.
-                        </p>
-                        <p class="p-4 rounded-2xl bg-white border border-blue-200 border-r-4 border-r-skybrand-500 text-royal-900 font-semibold text-sm sm:text-base">
-                            همچنین مجموعه‌های صنعتی و پژوهشی می‌توانند از طریق این بخش با ظرفیت علمی و تخصصی دانشگاه آشنا شوند.
-                        </p>
-                    </div>
-                </div>
+    function openLightbox(index) {
+        currentIndex = index;
+        updateLightbox();
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
-                <!-- تصویر ۶: بخش معرفی اساتید -->
-                <div class="lg:col-span-5 lg:sticky lg:top-24 order-1 lg:order-2">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/6.png" 
-                                alt="سامانه جامع معرفی اساتید و سوابق علمی" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1000&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                        </div>
-                        <div class="p-4 mt-2 rounded-2xl bg-royal-900 text-white">
-                            <span class="text-xs text-sky-300 font-bold block">بانک اطلاعات علمی</span>
-                            <h4 class="font-extrabold text-sm mt-0.5">صفحه اختصاصی رزومه، تخصص‌ها و سوابق صنعتی اساتید</h4>
-                        </div>
-                    </div>
-                </div>
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-            </div>
-        </div>
-    </section>
+    function updateLightbox() {
+        document.getElementById('lightboxImg').src = images[currentIndex].src;
+        document.getElementById('lightboxCaption').textContent = images[currentIndex].caption;
+    }
 
-    <!-- بند ۵: سامانه پیشنهادها، انتقادات و شکایات (تصویر ۵ - ثبت شکایت و پیشنهادات) -->
-    <section class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200/80">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 reveal">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <!-- تصویر ۵: ثبت شکایت و پیشنهادات -->
-                <div class="lg:col-span-5">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/5.png" 
-                                alt="سامانه ثبت شکایت و پیشنهادات دانشجویان" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1000&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                        </div>
-                        <div class="mt-3 flex flex-wrap gap-1.5 justify-center">
-                            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">ثبت‌شده</span>
-                            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">در حال بررسی</span>
-                            <span class="px-3 py-1 rounded-full bg-blue-100 text-royal-800 text-xs font-bold">ارجاع‌شده</span>
-                            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">پاسخ‌داده‌شده</span>
-                        </div>
-                    </div>
-                </div>
+    function nextImage(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        updateLightbox();
+    }
 
-                <!-- متن ابتدایی بند ۵ -->
-                <div class="lg:col-span-7 space-y-5">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۵</span>
-                        <div>
-                            <span class="text-xs font-bold text-skybrand-600 block">بخش پنجم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۵. سامانه پیشنهادها، انتقادات و شکایات</h2>
-                        </div>
-                    </div>
+    function prevImage(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateLightbox();
+    }
 
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft space-y-4 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                        <p>
-                            یکی از مهم‌ترین قابلیت‌های پیشنهادی، ایجاد یک بستر الکترونیکی برای دریافت، ارجاع و پیگیری درخواست‌ها، پیشنهادها و شکایات دانشجویان و خانواده‌های آنان است.
-                        </p>
-                        <p>
-                            در روش‌های سنتی، دانشجو یا خانواده او برای مطرح‌کردن یک مشکل یا پیگیری موضوع ممکن است مجبور به مراجعه حضوری، مراجعه به چند واحد مختلف یا پیگیری تلفنی شود. این فرآیند علاوه بر اتلاف زمان، می‌تواند موجب افزایش مراجعات غیرضروری و دشواری پیگیری درخواست‌ها شود.
-                        </p>
-                        <p class="p-4 rounded-2xl bg-blue-50/80 border-r-4 border-r-royal-600 text-royal-900 font-bold text-sm sm:text-base">
-                            در سامانه پیشنهادی، کاربر می‌تواند بدون نیاز به مراجعه حضوری، درخواست خود را ثبت کند.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- فرآیند ۷ مرحله‌ای پیشنهادی -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft">
-                <h3 class="text-lg sm:text-xl font-black text-royal-900 mb-6">فرآیند پیشنهادی ثبت و پیگیری درخواست به این صورت خواهد بود:</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span class="w-7 h-7 rounded-full bg-royal-900 text-white text-xs font-black flex items-center justify-center mb-2.5">۱</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800 leading-6">ورود کاربر به بخش ثبت درخواست.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span class="w-7 h-7 rounded-full bg-royal-800 text-white text-xs font-black flex items-center justify-center mb-2.5">۲</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800 leading-6">انتخاب موضوع از میان دسته‌بندی‌های مشخص.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span class="w-7 h-7 rounded-full bg-royal-700 text-white text-xs font-black flex items-center justify-center mb-2.5">۳</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800 leading-6">ثبت توضیحات و در صورت نیاز ارسال مستندات و تصاویر.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200">
-                        <span class="w-7 h-7 rounded-full bg-skybrand-500 text-white text-xs font-black flex items-center justify-center mb-2.5">۴</span>
-                        <p class="text-xs sm:text-sm font-bold text-royal-900 leading-6">دریافت کد پیگیری اختصاصی.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span class="w-7 h-7 rounded-full bg-royal-700 text-white text-xs font-black flex items-center justify-center mb-2.5">۵</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800 leading-6">ارجاع درخواست به واحد یا مسئول مربوطه.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                        <span class="w-7 h-7 rounded-full bg-royal-800 text-white text-xs font-black flex items-center justify-center mb-2.5">۶</span>
-                        <p class="text-xs sm:text-sm font-bold text-slate-800 leading-6">بررسی درخواست و ثبت پاسخ توسط مسئول مربوطه.</p>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                        <span class="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center mb-2.5">۷</span>
-                        <p class="text-xs sm:text-sm font-bold text-emerald-950 leading-6">مشاهده نتیجه و وضعیت رسیدگی توسط ثبت‌کننده درخواست.</p>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 mt-5">
-                    همچنین وضعیت درخواست‌ها می‌تواند در مراحل مختلف مانند <strong>ثبت‌شده، در حال بررسی، ارجاع‌شده و پاسخ‌داده‌شده</strong> نمایش داده شود.
-                </p>
-            </div>
-
-            <!-- مزایای این بخش + دمو زنده کد پیگیری -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft space-y-5 text-slate-700 text-base readable-text">
-                    <h3 class="text-lg sm:text-xl font-black text-royal-900">مزایای این بخش عبارت‌اند از:</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-semibold text-slate-800">
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>کاهش مراجعات حضوری غیرضروری</span></div>
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>کاهش اتلاف وقت دانشجویان و کارکنان</span></div>
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>افزایش سرعت انتقال درخواست‌ها به واحد مسئول</span></div>
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>جلوگیری از گم‌شدن یا فراموش‌شدن درخواست‌ها</span></div>
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>امکان مستندسازی و بررسی سوابق</span></div>
-                        <div class="flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>افزایش شفافیت در فرآیند رسیدگی</span></div>
-                        <div class="sm:col-span-2 flex items-center gap-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100"><i class="fa-solid fa-check text-emerald-600"></i><span>شناسایی مشکلات پرتکرار دانشجویان</span></div>
-                    </div>
-                    <p class="text-justify pt-2">
-                        از دیدگاه مدیریتی نیز این بخش می‌تواند به دانشگاه کمک کند تا با تحلیل درخواست‌ها و مشکلات ثبت‌شده، نقاط ضعف خدمات خود را شناسایی و برای بهبود آن‌ها برنامه‌ریزی کند.
-                    </p>
-                    <p class="p-4 rounded-2xl bg-blue-50/80 border-r-4 border-r-royal-600 text-royal-900 font-bold text-sm sm:text-base">
-                        در واقع، ارتباط دانشگاه و دانشجو از یک فرآیند سنتی و مبتنی بر مراجعه حضوری، به یک فرآیند ساختاریافته، قابل پیگیری و قابل ارزیابی تبدیل خواهد شد.
-                    </p>
-                </div>
-
-                <!-- دمو زنده ثبت درخواست و صدور کد رهگیری -->
-                <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border-2 border-blue-200 shadow-card no-print">
-                    <span class="inline-block px-3 py-1 rounded-full bg-blue-50 text-royal-700 text-xs font-extrabold mb-2">پیش‌نمایش تعاملی</span>
-                    <h4 class="text-lg font-black text-royal-900 mb-1">آزمایش زنده صدور کد پیگیری</h4>
-                    <p class="text-xs text-slate-500 mb-4">نحوه دریافت کد رهگیری توسط دانشجو را به‌صورت زنده امتحان کنید:</p>
-
-                    <form id="demoTicketForm" class="space-y-3.5">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">انتخاب موضوع درخواست</label>
-                            <select id="ticketCategory" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm focus:outline-none focus:border-royal-600">
-                                <option value="امور آموزشی و انتخاب واحد">امور آموزشی و انتخاب واحد</option>
-                                <option value="پیشنهاد بهبود امکانات کارگاهی">پیشنهاد بهبود امکانات کارگاهی</option>
-                                <option value="امور رفاهی و دانشجویی">امور رفاهی و دانشجویی</option>
-                                <option value="امور پژوهشی و فناوری">امور پژوهشی و فناوری</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">شرح مختصر (آزمایشی)</label>
-                            <input type="text" placeholder="مثلاً: پیشنهاد برگزاری کارگاه برنامه‌نویسی..." class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm focus:outline-none focus:border-royal-600">
-                        </div>
-                        <button type="submit" class="w-full py-3 rounded-xl bg-royal-900 hover:bg-royal-800 text-white font-bold text-sm transition cursor-pointer">
-                            ثبت آزمایشی و دریافت کد پیگیری
-                        </button>
-                    </form>
-
-                    <div id="trackingResult" class="hidden mt-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                        <span class="block text-xs font-bold text-emerald-800">وضعیت: ثبت‌شده و آماده ارجاع به واحد مربوطه</span>
-                        <div class="mt-2 flex items-center justify-between bg-white p-2.5 rounded-xl border border-emerald-200">
-                            <span class="text-xs text-slate-600">کد پیگیری اختصاصی:</span>
-                            <span id="generatedCode" class="font-mono font-black text-base text-royal-900">SARI-8492</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- بند ۶: ایجاد پایگاه مقالات و دستاوردهای علمی دانشجویان (تصویر ۳ - مقاله) -->
-    <section class="py-16 sm:py-20 bg-white border-t border-slate-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 reveal">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                <!-- متن اصلی بند ۶ -->
-                <div class="lg:col-span-7 space-y-5">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۶</span>
-                        <div>
-                            <span class="text-xs font-bold text-skybrand-600 block">بخش ششم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۶. ایجاد پایگاه مقالات و دستاوردهای علمی دانشجویان</h2>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-4 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                        <p>
-                            یکی از مهم‌ترین بخش‌های توسعه‌ای پروژه، ایجاد بستری برای انتشار و معرفی آثار علمی، پژوهشی و تخصصی دانشجویان است. در این بخش، دانشجویان می‌توانند آثار و دستاوردهای خود را در حوزه‌های مختلف منتشر کنند، از جمله:
-                        </p>
-                        <div class="flex flex-wrap gap-2 pt-1">
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">مقالات علمی و پژوهشی</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">تحقیقات و پروژه‌های دانشگاهی</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">مقالات تخصصی فناوری و تکنولوژی</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">مطالب آموزشی و مهارتی</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">پژوهش‌های مرتبط با صنعت</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">پروژه‌های تخصصی و دستاوردهای عملی</span>
-                            <span class="px-3.5 py-2 rounded-xl bg-white border border-blue-100 text-xs sm:text-sm font-bold text-royal-900">مطالعات و تحلیل‌های علمی</span>
-                        </div>
-                        <p class="p-4 rounded-2xl bg-white border border-blue-200 border-r-4 border-r-skybrand-500 text-royal-950 font-bold text-sm sm:text-base">
-                            اهمیت این بخش فراتر از انتشار محتواست؛ زیرا می‌تواند به ایجاد هویت علمی و حرفه‌ای دیجیتال برای دانشجویان کمک کند.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- تصویر ۳: بخش مقاله -->
-                <div class="lg:col-span-5">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/3.png" 
-                                alt="پایگاه مقالات و دستاوردهای علمی دانشجویان" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1000&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                        </div>
-                        <div class="p-4 mt-2 rounded-2xl bg-blue-50/70 border border-blue-100">
-                            <h4 class="font-extrabold text-royal-900 text-sm">رزومه علمی ماندگار برای دانشجویان</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-6">انتشار آثار علمی با صفحات اختصاصی و بهینه‌شده برای موتورهای جست‌وجو (SEO)</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ۴ زیربخش بند ۶ به صورت کامل و خوانا -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-3">
-                    <h3 class="text-lg sm:text-xl font-black text-royal-900 flex items-center gap-2.5">
-                        <i class="fa-solid fa-address-card text-royal-600"></i>
-                        <span>ایجاد سابقه علمی قابل ارائه برای دانشجویان</span>
-                    </h3>
-                    <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                        هر مقاله می‌تواند دارای صفحه اختصاصی شامل عنوان، نام نویسنده، رشته تحصیلی، چکیده، کلیدواژه‌ها، تاریخ انتشار و مشخصات علمی باشد. به این ترتیب، دانشجو به‌مرور یک آرشیو قابل مشاهده از فعالیت‌های علمی و تخصصی خود ایجاد می‌کند. این سوابق می‌توانند هنگام تهیه رزومه، درخواست کارآموزی، استخدام یا معرفی توانمندی‌ها به شرکت‌ها و مجموعه‌های صنعتی مورد استفاده قرار گیرند. برای مثال، کارفرمایی که به دنبال جذب نیروی متخصص در حوزه نرم‌افزار است، می‌تواند با مشاهده مقالات و پروژه‌های منتشرشده یک دانشجو، شناخت بهتری از زمینه تخصصی، توانایی تحلیل و فعالیت‌های علمی او به دست آورد.
-                    </p>
-                </div>
-
-                <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-3">
-                    <h3 class="text-lg sm:text-xl font-black text-royal-900 flex items-center gap-2.5">
-                        <i class="fa-solid fa-magnifying-glass-chart text-skybrand-500"></i>
-                        <span>افزایش قابلیت دیده‌شدن در موتورهای جست‌وجو</span>
-                    </h3>
-                    <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                        با رعایت اصول بهینه‌سازی موتورهای جست‌وجو (SEO)، ایجاد صفحات اختصاصی برای مقالات، استفاده از عنوان‌ها و توضیحات استاندارد و ساختار مناسب محتوا، آثار منتشرشده می‌توانند توسط موتورهای جست‌وجو شناسایی و نمایه‌سازی شوند. در نتیجه، نام دانشجو و دستاوردهای علمی او این فرصت را پیدا می‌کنند که از طریق جست‌وجوهای مرتبط در فضای اینترنت دیده شوند. این موضوع می‌تواند به تقویت حضور دیجیتال دانشجو و ایجاد سابقه علمی قابل دسترسی کمک کند. البته میزان دیده‌شدن به کیفیت محتوا، رقابت موضوعی و شرایط نمایه‌سازی موتورهای جست‌وجو بستگی دارد.
-                    </p>
-                </div>
-
-                <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-3">
-                    <h3 class="text-lg sm:text-xl font-black text-royal-900 flex items-center gap-2.5">
-                        <i class="fa-solid fa-handshake text-royal-600"></i>
-                        <span>ارتباط میان دانشگاه و بازار کار</span>
-                    </h3>
-                    <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                        این بخش می‌تواند بستری برای معرفی استعدادها و توانمندی‌های دانشجویان به مجموعه‌های صنعتی و شرکت‌ها نیز فراهم کند. دانشجو صرفاً دریافت‌کننده آموزش نخواهد بود، بلکه می‌تواند فعالیت‌ها و دستاوردهای خود را در یک محیط علمی وابسته به دانشگاه منتشر کند. به این ترتیب، دانشگاه علاوه بر آموزش دانشجویان، در معرفی توانمندی‌ها و آماده‌سازی آن‌ها برای ورود به بازار کار نیز نقش مؤثرتری ایفا خواهد کرد.
-                    </p>
-                </div>
-
-                <div class="bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-3">
-                    <h3 class="text-lg sm:text-xl font-black text-royal-900 flex items-center gap-2.5">
-                        <i class="fa-solid fa-ranking-star text-skybrand-500"></i>
-                        <span>ارتقای جایگاه علمی و محتوایی دانشگاه</span>
-                    </h3>
-                    <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                        انتشار مستمر مقالات، تحقیقات و دستاوردهای تخصصی باعث افزایش محتوای علمی اختصاصی وب‌سایت می‌شود. این موضوع می‌تواند به افزایش حضور دانشگاه در نتایج جست‌وجوهای مرتبط با حوزه‌های تخصصی و تقویت اعتبار علمی و دیجیتال مجموعه کمک کند. برای حفظ کیفیت این بخش، پیشنهاد می‌شود مقالات پیش از انتشار از نظر اصالت محتوا و کیفیت علمی بررسی شوند و مطالب عمومی از مقالات پژوهشی داوری‌شده تفکیک شوند.
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- بندهای ۷، ۸ و ۹: سامانه اخبار و ارتباط یکپارچه (تصویر ۴)، طراحی واکنش‌گرا و ارزش راهبردی آینده -->
-    <section class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200/80">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 reveal">
-            
-            <!-- بند ۷: سامانه اخبار و اطلاع‌رسانی یکپارچه (تصویر ۴ - راه ارتباطی با دانشگاه) -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                <div class="lg:col-span-5">
-                    <div class="bg-white p-3 rounded-3xl border border-blue-100 shadow-card">
-                        <div class="rounded-2xl overflow-hidden aspect-[4/3] bg-royal-900">
-                            <img 
-                                src="https://raw.githubusercontent.com/mahdiklidari190/Dsnesh/refs/heads/main/4.png" 
-                                alt="راه ارتباطی با دانشگاه و سامانه اخبار و اطلاع‌رسانی یکپارچه" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85';"
-                                class="w-full h-full object-cover"
-                            >
-                        </div>
-                        <div class="p-4 mt-2 rounded-2xl bg-blue-50/70 border border-blue-100">
-                            <h4 class="font-extrabold text-royal-900 text-sm">مرجع رسمی ارتباط و اطلاع‌رسانی دانشگاه</h4>
-                            <p class="text-xs text-slate-600 mt-1 leading-6">دسته‌بندی منظم اطلاعیه‌های آموزشی، فرهنگی، پژوهشی و دانشجویی</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 space-y-5">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۷</span>
-                        <div>
-                            <span class="text-xs font-bold text-skybrand-600 block">بخش هفتم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۷. سامانه اخبار و اطلاع‌رسانی یکپارچه</h2>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft space-y-4 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                        <p>
-                            سامانه پیشنهادی همچنان نقش مرجع رسمی اطلاع‌رسانی دانشگاه را ایفا می‌کند، اما با امکانات و ساختاری کامل‌تر. تمام اخبار، اطلاعیه‌ها، فراخوان‌ها، رویدادها و برنامه‌های دانشگاه در بخش‌های مشخص منتشر می‌شوند.
-                        </p>
-                        <p>
-                            کاربران می‌توانند اخبار را بر اساس موضوع، تاریخ و دسته‌بندی مشاهده کنند و به آرشیو اطلاعیه‌های قبلی دسترسی داشته باشند. همچنین امکان ایجاد بخش‌های اختصاصی برای اطلاعیه‌های آموزشی، فرهنگی، پژوهشی و دانشجویی وجود خواهد داشت.
-                        </p>
-                        <p class="p-4 rounded-2xl bg-blue-50/80 border-r-4 border-r-royal-600 text-royal-900 font-bold text-sm sm:text-base">
-                            هدف این است که کاربران برای دریافت اخبار و اطلاعات دانشگاه مجبور به جست‌وجو در چندین کانال و صفحه مختلف نباند و بتوانند به یک مرجع رسمی و متمرکز مراجعه کنند.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- بند ۸ و بند ۹ کنار هم -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                
-                <!-- بند ۸: طراحی واکنش‌گرا و تجربه کاربری -->
-                <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-blue-100 shadow-soft flex flex-col justify-between space-y-5">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
-                            <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black text-base flex items-center justify-center shrink-0">۸</span>
-                            <h3 class="text-xl font-black text-royal-900">۸. طراحی واکنش‌گرا و تجربه کاربری</h3>
-                        </div>
-
-                        <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                            یکی از الزامات اساسی سامانه جدید، طراحی کاملاً واکنش‌گرا (Responsive Design) است. با توجه به استفاده گسترده کاربران از تلفن‌های هوشمند، وب‌سایت باید در تمام اندازه‌های نمایشگر عملکرد مناسب داشته باشد. در طراحی پیشنهادی، ساختار صفحات برای رایانه، تبلت و تلفن همراه متناسب‌سازی می‌شود.
-                        </p>
-
-                        <h4 class="text-sm font-extrabold text-royal-900 pt-1">ویژگی‌های این طراحی عبارت‌اند از:</h4>
-                        <ul class="space-y-2.5 text-sm font-semibold text-slate-800">
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>رابط کاربری مدرن و متناسب با فضای دانشگاهی</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>پشتیبانی کامل از زبان فارسی و چیدمان راست‌چین</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>سازگاری با نمایشگرهای مختلف</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>طراحی اختصاصی نسخه موبایل و دسکتاپ</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>دسته‌بندی منظم اطلاعات</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>دسترسی سریع به امکانات پرکاربرد</span></li>
-                            <li class="flex items-center gap-2.5 bg-slate-50 p-3 rounded-xl"><i class="fa-solid fa-check text-royal-600"></i><span>رعایت اصول خوانایی و سهولت استفاده</span></li>
-                        </ul>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-600 pt-3 border-t border-slate-100">
-                        این موضوع باعث می‌شود دانشجویان و سایر مخاطبان بتوانند بدون محدودیت دستگاه، از امکانات سامانه استفاده کنند.
-                    </p>
-                </div>
-
-                <!-- بند ۹: ارزش راهبردی سامانه برای آینده دانشگاه -->
-                <div class="lg:col-span-7 bg-gradient-to-br from-royal-900 to-royal-800 text-white rounded-3xl p-6 sm:p-8 shadow-card flex flex-col justify-between space-y-5">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
-                            <span class="w-9 h-9 rounded-xl bg-white/15 text-sky-300 font-black text-base flex items-center justify-center shrink-0">۹</span>
-                            <h3 class="text-xl sm:text-2xl font-black">۹. ارزش راهبردی سامانه برای آینده دانشگاه</h3>
-                        </div>
-
-                        <p class="text-sm sm:text-base text-blue-100 readable-text">
-                            یکی از مهم‌ترین مزایای پروژه، قابلیت توسعه تدریجی آن است. سامانه می‌تواند در مراحل بعدی به امکانات پیشرفته‌تری مجهز شود، از جمله:
-                        </p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold">
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-sliders text-sky-300 mt-1"></i><span>پنل مدیریت اختصاصی برای واحدهای مختلف دانشگاه</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-ticket text-sky-300 mt-1"></i><span>سیستم ثبت و پیگیری درخواست‌های دانشجویی</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-database text-sky-300 mt-1"></i><span>بانک اطلاعاتی جامع اساتید و رشته‌ها</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-photo-film text-sky-300 mt-1"></i><span>آرشیو دیجیتال تصاویر و ویدئوهای دانشگاه</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-user-check text-sky-300 mt-1"></i><span>پروفایل علمی و حرفه‌ای دانشجویان</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-newspaper text-sky-300 mt-1"></i><span>سیستم انتشار و مدیریت مقالات</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-briefcase text-sky-300 mt-1"></i><span>بخش معرفی فرصت‌های کارآموزی و شغلی</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-calendar-days text-sky-300 mt-1"></i><span>تقویم رویدادها و برنامه‌های دانشگاه</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-bell text-sky-300 mt-1"></i><span>سیستم اطلاع‌رسانی و اعلان‌های هوشمند</span></div>
-                            <div class="bg-white/10 p-3.5 rounded-xl flex items-start gap-2.5"><i class="fa-solid fa-plug text-sky-300 mt-1"></i><span>امکان اتصال به سامانه‌های آموزشی و اداری موجود، در صورت فراهم‌بودن زیرساخت و مجوزهای لازم</span></div>
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-2xl bg-white/10 border border-sky-300/30 text-sm text-white leading-7">
-                        بنابراین، دانشگاه می‌تواند به‌جای ایجاد بسترهای پراکنده و مستقل، خدمات جدید خود را به‌تدریج در یک ساختار یکپارچه توسعه دهد.
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <!-- بندهای ۱۰، ۱۱ و ۱۲: زیرساخت فنی، امنیت و برآورد هزینه‌های پروژه (طراحی و پشتیبانی رایگان بدون محدودیت دوساله) -->
-    <section class="py-16 sm:py-20 bg-white border-t border-slate-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 reveal">
-            
-            <!-- بند ۱۰ و ۱۱ -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                
-                <!-- بند ۱۰: زیرساخت فنی و میزبانی سامانه -->
-                <div class="lg:col-span-7 bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black text-base flex items-center justify-center shrink-0">۱۰</span>
-                        <h3 class="text-xl font-black text-royal-900">۱۰. زیرساخت فنی و میزبانی سامانه</h3>
-                    </div>
-                    <p class="text-sm sm:text-base text-slate-700 mb-5">
-                        برای میزبانی سامانه، زیرساخت هاست ابری ایران در نظر گرفته شده است. مشخصات سرویس پیشنهادی مطابق پیش‌فاکتور:
-                    </p>
-
-                    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-                        <table class="w-full text-sm text-right">
-                            <thead class="bg-royal-900 text-white">
-                                <tr>
-                                    <th class="py-3 px-4 font-bold">مشخصات</th>
-                                    <th class="py-3 px-4 font-bold">مقدار</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">نوع سرویس</td><td class="py-2.5 px-4 font-extrabold text-royal-900">هاست ابری</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">منطقه میزبانی</td><td class="py-2.5 px-4 font-extrabold text-royal-900">ایران</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">فضای ذخیره‌سازی</td><td class="py-2.5 px-4 font-extrabold text-royal-900">۵۰ گیگابایت</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">حافظه RAM</td><td class="py-2.5 px-4 font-extrabold text-royal-900">۸ گیگابایت</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">پردازنده CPU</td><td class="py-2.5 px-4 font-extrabold text-royal-900">۸ هسته</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">پردازنده MySQL</td><td class="py-2.5 px-4 font-extrabold text-royal-900">۵ هسته</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">تعداد EP</td><td class="py-2.5 px-4 font-extrabold text-royal-900">۵</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">کنترل پنل</td><td class="py-2.5 px-4 font-extrabold text-royal-900">cPanel</td></tr>
-                                <tr><td class="py-2.5 px-4 text-slate-600 font-medium">مدت سرویس</td><td class="py-2.5 px-4 font-extrabold text-skybrand-600">یک سال</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-4">
-                        انتخاب زیرساخت مناسب نقش مهمی در عملکرد، دسترس‌پذیری و قابلیت توسعه سامانه خواهد داشت.
-                    </p>
-                </div>
-
-                <!-- بند ۱۱: امنیت و پایداری سامانه -->
-                <div class="lg:col-span-5 bg-slate-50/90 rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col justify-between space-y-5">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3">
-                            <span class="w-9 h-9 rounded-xl bg-royal-900 text-white font-black text-base flex items-center justify-center shrink-0">۱۱</span>
-                            <h3 class="text-xl font-black text-royal-900">۱۱. امنیت و پایداری سامانه</h3>
-                        </div>
-                        <p class="text-sm sm:text-base text-slate-700 readable-text text-justify">
-                            در طراحی و راه‌اندازی سامانه، امنیت اطلاعات و پایداری سرویس از اهمیت بالایی برخوردار است. برای این منظور، استفاده از ارتباط امن HTTPS، تهیه نسخه پشتیبان منظم، مدیریت سطح دسترسی کاربران، محافظت از بخش مدیریت، به‌روزرسانی مؤلفه‌های نرم‌افزاری و پایش وضعیت سرور در نظر گرفته می‌شود.
-                        </p>
-                    </div>
-
-                    <div class="p-5 rounded-2xl bg-white border border-blue-200 text-sm text-royal-950 readable-text text-justify">
-                        همچنین ساختار فنی سامانه به‌گونه‌ای طراحی خواهد شد که در صورت افزایش تعداد کاربران یا گسترش خدمات، امکان ارتقای منابع و توسعه قابلیت‌ها وجود داشته باشد.
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- بند ۱۲: برآورد هزینه‌های پروژه (طراحی و پشتیبانی رایگان) -->
-            <div class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-blue-200 shadow-card space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۱۲</span>
-                        <div>
-                            <span class="text-xs font-bold text-emerald-700 block">بخش دوازدهم طرح پیشنهادی</span>
-                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۱۲. برآورد هزینه‌های پروژه</h2>
-                        </div>
-                    </div>
-                    <span class="px-4 py-2 rounded-xl bg-blue-50 text-royal-900 text-xs sm:text-sm font-bold border border-blue-100">
-                        مبلغ هاست بر اساس پیش‌فاکتور شماره ۳۳۴۴۵۱۰۰ محاسبه شده است
-                    </span>
-                </div>
-
-                <p class="text-sm sm:text-base text-slate-700 readable-text">
-                    یکی از ویژگی‌های مهم این پیشنهاد، ارائه پروژه با شرایط اقتصادی مناسب برای دانشگاه است. هزینه‌های زیرساخت اولیه شامل موارد زیر است:
-                </p>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                    <!-- جدول هزینه‌ها -->
-                    <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
-                        <div class="overflow-hidden rounded-2xl border border-slate-200">
-                            <table class="w-full text-sm text-right">
-                                <thead class="bg-royal-900 text-white">
-                                    <tr>
-                                        <th class="py-3.5 px-4 font-bold">عنوان هزینه</th>
-                                        <th class="py-3.5 px-4 font-bold">مدت اعتبار</th>
-                                        <th class="py-3.5 px-4 font-bold">مبلغ</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-200">
-                                    <tr>
-                                        <td class="py-3.5 px-4 font-bold text-slate-800">دامنه اختصاصی</td>
-                                        <td class="py-3.5 px-4 text-slate-600">پنج سال</td>
-                                        <td class="py-3.5 px-4 font-extrabold text-royal-900">۲۵۰٬۰۰۰ تومان</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-3.5 px-4 font-bold text-slate-800">هاست ابری ایران</td>
-                                        <td class="py-3.5 px-4 text-slate-600">یک سال</td>
-                                        <td class="py-3.5 px-4 font-extrabold text-royal-900">۱۱٬۱۹۴٬۴۸۵ تومان</td>
-                                    </tr>
-                                    <tr class="bg-blue-50 font-black text-royal-950">
-                                        <td class="py-4 px-4 text-base">مجموع هزینه زیرساخت اولیه</td>
-                                        <td class="py-4 px-4">—</td>
-                                        <td class="py-4 px-4 text-base sm:text-lg text-royal-700">۱۱٬۴۴۴٬۴۸۵ تومان</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <p class="text-sm sm:text-base text-slate-700 readable-text text-justify bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
-                            بنابراین دانشگاه برای طراحی، ساخت و پشتیبانی سامانه، هزینه‌ای پرداخت نخواهد کرد و هزینه اولیه موردنیاز صرفاً مربوط به تهیه دامنه و زیرساخت میزبانی است. این شرایط می‌تواند فرصت مناسبی برای دانشگاه باشد تا بدون پرداخت هزینه طراحی و توسعه و با صرف هزینه زیرساخت، صاحب یک سامانه اختصاصی و قابل توسعه شود.
-                        </p>
-                    </div>
-
-                    <!-- کارت شرایط ویژه اجرای پروژه (رایگان) -->
-                    <div class="lg:col-span-5 bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-700 text-white rounded-3xl p-6 sm:p-8 shadow-card flex flex-col justify-between">
-                        <div class="space-y-4">
-                            <span class="inline-block px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-extrabold">
-                                شرایط ویژه اجرای پروژه
-                            </span>
-                            <h3 class="text-xl font-black">طراحی، توسعه و پشتیبانی رایگان</h3>
-                            <p class="text-xs sm:text-sm text-emerald-50 leading-7">
-                                به‌منظور کاهش هزینه‌های دانشگاه و تسهیل اجرای طرح، شرایط پیشنهادی به شرح زیر است:
-                            </p>
-
-                            <div class="space-y-3 text-sm font-bold">
-                                <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white/15 border border-white/20">
-                                    <span>طراحی و پیاده‌سازی سامانه:</span>
-                                    <span class="px-3 py-1 rounded-xl bg-white text-emerald-800 font-black text-xs">رایگان</span>
-                                </div>
-                                <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white/15 border border-white/20">
-                                    <span>توسعه و آماده‌سازی امکانات توافق‌شده:</span>
-                                    <span class="px-3 py-1 rounded-xl bg-white text-emerald-800 font-black text-xs">رایگان</span>
-                                </div>
-                                <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white/15 border border-white/20">
-                                    <span>پشتیبانی فنی و نگهداری سامانه:</span>
-                                    <span class="px-3 py-1 rounded-xl bg-white text-emerald-800 font-black text-xs">رایگان</span>
-                                </div>
-                                <div class="flex items-center justify-between p-3.5 rounded-2xl bg-black/15 border border-white/15 text-xs">
-                                    <span>هزینه دامنه و زیرساخت میزبانی:</span>
-                                    <span>مطابق مبالغ اعلام‌شده</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- بندهای ۱۳، ۱۴ و چشم‌انداز پروژه -->
-    <section class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200/80">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 reveal">
-            
-            <!-- بند ۱۳: دستاوردهای نهایی اجرای پروژه -->
-            <div class="space-y-6">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۱۳</span>
-                    <div>
-                        <span class="text-xs font-bold text-skybrand-600 block">بخش سیزدهم طرح پیشنهادی</span>
-                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۱۳. دستاوردهای نهایی اجرای پروژه</h2>
-                    </div>
-                </div>
-
-                <p class="text-sm sm:text-base text-slate-700 readable-text">
-                    با اجرای این طرح، دانشگاه از یک زیرساخت دیجیتال متمرکز برخوردار خواهد شد که چند هدف مهم را به‌صورت هم‌زمان دنبال می‌کند:
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-900 text-white font-black text-sm flex items-center justify-center shrink-0">۱</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">معرفی جامع دانشگاه و ظرفیت‌های آموزشی، علمی و فیزیکی آن.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-800 text-white font-black text-sm flex items-center justify-center shrink-0">۲</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">ایجاد مرجع رسمی اخبار، اطلاعیه‌ها و اطلاعات دانشگاه.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-700 text-white font-black text-sm flex items-center justify-center shrink-0">۳</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">فراهم‌کردن ارتباط مستقیم و قابل پیگیری میان دانشجویان و مسئولان.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-skybrand-600 text-white font-black text-sm flex items-center justify-center shrink-0">۴</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">کاهش مراجعات حضوری غیرضروری از طریق خدمات الکترونیکی.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-skybrand-500 text-white font-black text-sm flex items-center justify-center shrink-0">۵</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">معرفی تخصص‌ها، سوابق و تجربیات علمی اساتید.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-700 text-white font-black text-sm flex items-center justify-center shrink-0">۶</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">ایجاد فرصت انتشار و دیده‌شدن دستاوردهای علمی دانشجویان.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-800 text-white font-black text-sm flex items-center justify-center shrink-0">۷</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">کمک به تقویت رزومه علمی و حرفه‌ای دانشجویان.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-royal-900 text-white font-black text-sm flex items-center justify-center shrink-0">۸</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">تقویت هویت دیجیتال دانشگاه و افزایش حضور آن در فضای اینترنت.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-soft flex items-start gap-3.5">
-                        <span class="w-8 h-8 rounded-xl bg-skybrand-600 text-white font-black text-sm flex items-center justify-center shrink-0">۹</span>
-                        <p class="text-sm sm:text-[15px] font-bold text-slate-800 leading-7">فراهم‌سازی زیرساخت لازم برای توسعه خدمات هوشمند دانشگاهی.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- بند ۱۴: جمع‌بندی و درخواست اجرای طرح -->
-            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-blue-200 shadow-soft space-y-5">
-                <div class="flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-2xl bg-royal-900 text-white font-black text-lg flex items-center justify-center shrink-0">۱۴</span>
-                    <div>
-                        <span class="text-xs font-bold text-skybrand-600 block">بخش پایانی طرح پیشنهادی</span>
-                        <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-royal-900">۱۴. جمع‌بندی و درخواست اجرای طرح</h2>
-                    </div>
-                </div>
-
-                <div class="space-y-4 text-slate-700 text-base sm:text-[17px] readable-text text-justify">
-                    <p>
-                        آنچه در این پروژه پیشنهاد می‌شود، صرفاً ایجاد یک وب‌سایت جدید یا تغییر ظاهر ساختار فعلی نیست. هدف، ایجاد یک مرجع دیجیتال جامع است که بتواند دانشگاه را به‌صورت کامل‌تر به جامعه معرفی کند، اطلاعات و خدمات را در یک بستر متمرکز ارائه دهد، ارتباط میان دانشجویان و مسئولان را تسهیل کند و فرصت دیده‌شدن توانمندی‌های علمی و تخصصی دانشجویان را فراهم سازد.
-                    </p>
-                    <p>
-                        این سامانه می‌تواند به دانشجویان کمک کند بدون مراجعه حضوری به بسیاری از اطلاعات و خدمات موردنیاز خود دسترسی داشته باشند؛ به خانواده‌ها امکان شناخت بهتر محیط دانشگاه را بدهد؛ به متقاضیان تحصیل در انتخاب آگاهانه‌تر کمک کند و به اساتید و دانشجویان بستری برای معرفی دستاوردهای علمی و تخصصی ارائه دهد.
-                    </p>
-                    <p>
-                        از سوی دیگر، دانشگاه نیز از یک زیرساخت متمرکز برای مدیریت اطلاعات، دریافت درخواست‌ها، انتشار محتوا و توسعه خدمات دیجیتال برخوردار خواهد شد. نکته قابل توجه، شرایط اقتصادی اجرای این طرح است؛ به‌گونه‌ای که طراحی، پیاده‌سازی و پشتیبانی فنی سامانه به‌صورت رایگان ارائه می‌شود و دانشگاه صرفاً هزینه تهیه دامنه و زیرساخت میزبانی را پرداخت خواهد کرد.
-                    </p>
-                    <p class="p-5 rounded-2xl bg-blue-50/90 border-r-4 border-r-royal-700 text-royal-950 font-extrabold">
-                        پیشنهاد می‌شود این طرح به‌عنوان یک پروژه توسعه زیرساخت دیجیتال دانشگاه مورد بررسی و حمایت قرار گیرد تا زمینه لازم برای استقرار و بهره‌برداری از آن فراهم شود.
-                    </p>
-                </div>
-            </div>
-
-            <!-- چشم‌انداز پروژه -->
-            <div class="rounded-3xl bg-gradient-to-l from-royal-950 via-royal-900 to-skybrand-600 p-8 sm:p-12 text-white text-center shadow-card space-y-5">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-white/15 text-sky-200 text-xs font-extrabold border border-white/20">
-                    چشم‌انداز پروژه
-                </span>
-                <blockquote class="max-w-4xl mx-auto text-lg sm:text-2xl font-black leading-relaxed">
-                    «هدف ما صرفاً ساخت یک وب‌سایت نیست؛ هدف، ایجاد مرجعی دیجیتال برای شناخت دانشگاه، ارتباط مؤثر، توسعه علمی و معرفی استعدادهای دانشجویان است؛ بستری که هم به ارتقای جایگاه دانشگاه کمک کند و هم برای دانشجویان آن ارزش واقعی ایجاد کند.»
-                </blockquote>
-                <div class="pt-2 flex flex-wrap items-center justify-center gap-3 no-print">
-                    <button onclick="showToast('آماده ارائه و بررسی', 'طرح پیشنهادی سامانه جامع مرجع دانشگاه ملی مهارت – دانشکده امام محمدباقر (ع) ساری آماده بررسی است.')" class="px-6 py-3 rounded-2xl bg-white text-royal-900 hover:bg-blue-50 font-black text-sm shadow-md transition cursor-pointer">
-                        تأیید و ثبت نظر جهت بررسی طرح
-                    </button>
-                    <button onclick="window.print()" class="px-6 py-3 rounded-2xl bg-white/15 hover:bg-white/25 text-white border border-white/30 font-bold text-sm transition cursor-pointer">
-                        چاپ یا ذخیره PDF طرح
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- فوتر رسمی -->
-    <footer class="bg-royal-950 text-blue-200 py-8 border-t border-royal-900">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
-            <p class="font-bold text-white">طرح پیشنهادی طراحی و راه‌اندازی سامانه جامع مرجع دانشگاه</p>
-            <p class="text-blue-300">دانشگاه ملی مهارت – دانشکده امام محمدباقر (ع) ساری</p>
-        </div>
-    </footer>
-
-    <!-- اسکریپت‌های تعاملی -->
-    <script>
-        function showToast(title, msg) {
-            const toastBox = document.getElementById('toastBox');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMsg').textContent = msg;
-            toastBox.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                toastBox.classList.add('translate-y-24', 'opacity-0');
-            }, 4000);
-        }
-
-        function animateCharts() {
-            document.querySelectorAll('.chart-col').forEach(col => {
-                col.style.height = col.getAttribute('data-height');
-            });
-        }
-
-        function replayCharts() {
-            document.querySelectorAll('.chart-col').forEach(col => {
-                col.style.height = '0%';
-            });
-            setTimeout(animateCharts, 150);
-        }
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    if (entry.target.querySelector('.chart-col')) {
-                        animateCharts();
-                    }
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        const demoTicketForm = document.getElementById('demoTicketForm');
-        demoTicketForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const cat = document.getElementById('ticketCategory').value;
-            const randomNum = Math.floor(1000 + Math.random() * 9000);
-            const code = `SARI-${randomNum}`;
-            
-            document.getElementById('generatedCode').textContent = code;
-            document.getElementById('trackingResult').classList.remove('hidden');
-            showToast('کد پیگیری صادر شد', `درخواست در بخش «${cat}» با کد ${code} ثبت شد.`);
-        });
-
-        window.onload = function() {
-            setTimeout(animateCharts, 350);
-        };
-    </script>
+    // کلیدهای کیبورد
+    document.addEventListener('keydown', function(e) {
+        if (!document.getElementById('lightbox').classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') nextImage(e);
+        if (e.key === 'ArrowRight') prevImage(e);
+    });
+</script>
 </body>
 </html>
